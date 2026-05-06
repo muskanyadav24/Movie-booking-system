@@ -1,0 +1,45 @@
+/* Container */
+.container {
+  padding: 20px;
+}
+
+/* Heading */
+h2 {
+  margin-bottom: 15px;
+}
+
+/* Card UI */
+.card {
+  background-color: #1e293b;
+  border-radius: 10px;
+  padding: 15px;
+  margin: 10px 0;
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: scale(1.02);
+}
+
+/* Navbar */
+.navbar {
+  background-color: #020617;
+  padding: 15px;
+  display: flex;
+  gap: 20px;
+}
+
+/* Form */
+.form-container {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+}
+
+/* Center layout */
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+}
