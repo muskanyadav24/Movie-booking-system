@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { Link } from "react-router-dom";
 
 function Register() {
   const navigate = useNavigate();
@@ -70,6 +71,7 @@ function Register() {
         </select>
 
         <button type="submit">Register</button>
+        <p>Already have an account? <Link to="/login">Login here</Link></p>
       </form>
     </div>
   );
