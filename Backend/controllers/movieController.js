@@ -1,13 +1,13 @@
 const Movie = require('../models/movieModel')
 
 const addMovie = async (req, res) => {
-    try {
-        const { title, description, durationInMinutes, genre, language, releaseDate, posterUrl } = req.body
+    const { title, description, showtime, price, image } = req.body
 
-        if (!title || !description || !durationInMinutes || !genre || !language || !releaseDate || !posterUrl) {
+    try {
+        if (!title || !description || !showtime || !price || !image) {
             return res.status(400).json({ message: "all fields required" })
         }
-        const movie = await Movie.create(req.body)
+        const movie = await Movie.create({ title, description, releaseDate: new Date(showtime), price, posterUrl: image })
         res.status(201).json({ message: "movie added", movie })
     } catch (err) {
         res.status(500).json({ message: err.message })

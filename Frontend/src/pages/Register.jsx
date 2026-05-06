@@ -1,20 +1,22 @@
 import { useState } from "react";
-import API from "../api";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 function Register() {
   const navigate = useNavigate();
+  const { register } = useAuth();
 
   const [form, setForm] = useState({
     username: "",
     email: "",
-    password: ""
+    password: "",
+    role: "user"
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await API.post("/register", form);
+      await register(form.username, form.email, form.password, form.role);
       alert("Registered Successfully");
       navigate("/login");
     } catch (err) {
@@ -29,6 +31,7 @@ function Register() {
       <form className="auth-form" onSubmit={handleSubmit}>
         <input
           placeholder="Username"
+          name="username"
           value={form.username}
           required
           onChange={(e) =>
@@ -38,6 +41,7 @@ function Register() {
 
         <input
           placeholder="Email"
+          name="email"
           value={form.email}
           required
           onChange={(e) =>
@@ -48,12 +52,22 @@ function Register() {
         <input
           type="password"
           placeholder="Password"
+          name="password"
           value={form.password}
           required
           onChange={(e) =>
             setForm({ ...form, password: e.target.value })
           }
         />
+
+        <select
+          value={form.role}
+          onChange={(e) => setForm({ ...form, role: e.target.value })}
+          required
+        >
+          <option value="user">User</option>
+          <option value="admin">Admin</option>
+        </select>
 
         <button type="submit">Register</button>
       </form>

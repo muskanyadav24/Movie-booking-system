@@ -3,9 +3,10 @@ const Movie = require('../models/movieModel')
 
 const bookMovie = async (req, res) => {
     try {
-        const { userId, movieId, seats, showDate } = req.body
+        const { movieId, seats, showDate } = req.body
+        const userId = req.user.id
 
-        if (!userId || !movieId || !seats || !showDate) {
+        if (!movieId || !seats || !showDate) {
             return res.status(400).json({ message: "all fields required" })
         }
 
@@ -15,7 +16,7 @@ const bookMovie = async (req, res) => {
             return res.status(404).json({ message: "movie not found" })
         }
 
-        const pricePerSeat = movie.price || 200 
+        const pricePerSeat = movie.price || 200
         const totalAmount = seats * pricePerSeat
 
         const booking = await Booking.create({
@@ -39,11 +40,16 @@ const bookMovie = async (req, res) => {
 const cancelBooking = async (req, res) => {
     try {
         const { bookingId } = req.body
+        const userId = req.user.id
 
         const booking = await Booking.findById(bookingId)
 
         if (!booking) {
             return res.status(404).json({ message: "Booking not found" })
+        }
+
+        if (booking.user.toString() !== userId) {
+            return res.status(403).json({ message: "Not authorized" })
         }
 
         if (booking.status === "cancelled") {
@@ -85,7 +91,8 @@ const cancelBooking = async (req, res) => {
 }
 
 const getBookings = async (req, res) => {
-    const data = await Booking.find()
+    const userId = req.user.id
+    const data = await Booking.find({ user: userId })
         .populate('user', 'username email')
         .populate('movie', 'title price')
 
